@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autonomous Vehicle Digital Twin — Unstructured Kutcha Road Simulation</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+  <!-- 3D WebGL Viewport -->
+  <div id="canvas-container"></div>
+
+  <!-- Top Telemetry Header -->
+  <header class="hud-header">
+    <div class="brand-block">
+      <div class="status-dot"></div>
+      <div>
+        <div class="brand-title">AV DIGITAL TWIN // UNSTRUCTURED KUTCHA ROAD</div>
+        <div class="brand-subtitle">3rd-Person PoV • Road Width Segmentation • Pothole Avoidance • Stanley Controller</div>
+      </div>
+    </div>
+
+    <div class="kpi-strip">
+      <div class="kpi-box">
+        <div class="kpi-label">Road Width</div>
+        <div class="kpi-value" id="kpi-width">6.40 m</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Vehicle Speed</div>
+        <div class="kpi-value" id="kpi-speed">28.0 km/h</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Steer Angle</div>
+        <div class="kpi-value" id="kpi-steer">0.0°</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Cross-Track Err</div>
+        <div class="kpi-value" id="kpi-cte">0.00 m</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Active Potholes</div>
+        <div class="kpi-value" id="kpi-hazards">0</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Left Control Dock -->
+  <aside class="hud-sidebar-left">
+    <div class="panel-title">Camera Perspective (PoV)</div>
+    <div class="btn-grid">
+      <button class="hud-btn active" data-cam="chase">3rd-Person Chase</button>
+      <button class="hud-btn" data-cam="bev">Drone Top BEV</button>
+      <button class="hud-btn" data-cam="sensor">Roof Sensor PoV</button>
+      <button class="hud-btn" data-cam="suspension">Low Suspension</button>
+    </div>
+
+    <div class="panel-title">Virtual Lane Synthesizer</div>
+    <div class="btn-grid">
+      <button class="hud-btn active" data-lane="left">Keep-Left (LHD)</button>
+      <button class="hud-btn" data-lane="center">Center Spine</button>
+    </div>
+
+    <div class="panel-title">Controller & Terrain Parameters</div>
+    <div class="control-row">
+      <div class="control-label">
+        <span>Target Cruise Speed</span>
+        <span id="val-speed">35 km/h</span>
+      </div>
+      <input type="range" id="slider-speed" min="15" max="60" step="1" value="35" />
+    </div>
+
+    <div class="control-row">
+      <div class="control-label">
+        <span>Stanley Gain (k)</span>
+        <span id="val-gain">0.75</span>
+      </div>
+      <input type="range" id="slider-gain" min="0.2" max="2.0" step="0.05" value="0.75" />
+    </div>
+
+    <div class="control-row">
+      <div class="control-label">
+        <span>Pothole Crater Count</span>
+        <span id="val-potholes">34</span>
+      </div>
+      <input type="range" id="slider-potholes" min="10" max="65" step="2" value="34" />
+    </div>
+
+    <div class="panel-title">3D Perception Layers</div>
+    <div class="toggle-list">
+      <label class="toggle-item">
+        <input type="checkbox" id="chk-scanlines" checked />
+        <span>Road Width Scanlines (+6m to +30m)</span>
+      </label>
+      <label class="toggle-item">
+        <input type="checkbox" id="chk-bboxes" checked />
+        <span>Pothole 3D Wireframe BBoxes</span>
+      </label>
+      <label class="toggle-item">
+        <input type="checkbox" id="chk-vlane" checked />
+        <span>Eroded Edges & Virtual Lane</span>
+      </label>
+      <label class="toggle-item">
+        <input type="checkbox" id="chk-traj" checked />
+        <span>Frenet Deflected Trajectory</span>
+      </label>
+    </div>
+  </aside>
+
+  <!-- Right BEV Telemetry Radar -->
+  <aside class="hud-sidebar-right">
+    <div class="panel-title">Bird's-Eye View (BEV) Perception Grid</div>
+    <canvas id="bev-canvas" width="230" height="220"></canvas>
+    <div id="status-banner" class="hazard-banner">NOMINAL VIRTUAL LANE</div>
+    <div class="legend-grid">
+      <div class="legend-item"><span class="swatch" style="background:#ffab00"></span>Eroded Edge</div>
+      <div class="legend-item"><span class="swatch" style="background:#00e676"></span>Virtual Lane</div>
+      <div class="legend-item"><span class="swatch" style="background:#00e5ff"></span>Frenet Path</div>
+      <div class="legend-item"><span class="swatch" style="background:#ff5252"></span>Pothole Crater</div>
+    </div>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

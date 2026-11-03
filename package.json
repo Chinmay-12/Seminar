@@ -1,0 +1,19 @@
+{
+  "name": "kutcha-road-av-digital-twin",
+  "version": "1.0.0",
+  "description": "3D Autonomous Vehicle Digital Twin for unstructured kutcha roads with pothole detection, road width segmentation, and Stanley lateral control.",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "autonomous-vehicles",
+    "digital-twin",
+    "threejs",
+    "kutcha-road",
+    "stanley-controller",
+    "frenet-planner",
+    "pothole-detection"
+  ],
+  "license": "MIT"
+}
